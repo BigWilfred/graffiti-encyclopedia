@@ -1,10 +1,13 @@
 export const state = () => ({
-    counter: 0
-  })
+  selected_letters: []
+})
   
-  export const mutations = {
-    increment(state) {
-      state.counter++
-    }
+export const mutations = {
+  addLetter(state, char){
+    state.selected_letters.push(char)
+  },
+  removeLetter(state, char){
+    state.selected_letters.splice(state.selected_letters.indexOf(char), 1)
+  }
 }
   

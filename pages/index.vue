@@ -13,7 +13,10 @@
         </a>
       </div>
       <div class="intro-button">
-        <a class="btn">
+        <a class="btn" @click="add('B')">
+          Advance
+        </a>
+        <a class="btn" @click="testClick()">
           Advance
         </a>
       </div>
@@ -22,8 +25,18 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
+
 export default {
-  
+  methods: {
+    testClick(){
+      // this.$store.commit('store/addLetter', 'A')
+      console.log(this.$store.state.store.selected_letters)
+    },
+    ...mapMutations({
+      add: 'store/addLetter'
+    })
+  }
 }
 </script>
 
