@@ -8,16 +8,22 @@
         <h4>Select the letters you would like to see</h4>
       </div>
       <div class="intro-letters">
-        <a v-for="(i, index) in Array(26)" :key="index" class="letter">
-          {{index}}
+        <a :class="{'included': $store.state.store.selected_letters.includes(char)}" v-for="(char, index) in alphabet" :key="index" class="letter" @click="add(char)">
+          {{char.toUpperCase()}}
+        </a>
+        <a @click="pop()" class="letter">
+          |B|
+        </a>
+        <a @click="clear()" class="letter">
+          |X|
         </a>
       </div>
       <div class="intro-button">
-        <a class="btn" @click="add('B')">
-          Advance
-        </a>
         <a class="btn" @click="testClick()">
-          Advance
+          Console Log State
+        </a>
+        <a class="btn" @click="clear()">
+          Clear State
         </a>
       </div>
     </div>
@@ -28,13 +34,30 @@
 import { mapMutations } from 'vuex'
 
 export default {
+  data(){
+    return{
+      alphabet: 'abcdefghijklmnopqrstuvwxyz'.split('')
+    }
+  },
   methods: {
     testClick(){
       // this.$store.commit('store/addLetter', 'A')
       console.log(this.$store.state.store.selected_letters)
     },
     ...mapMutations({
-      add: 'store/addLetter'
+      add: 'store/addLetter',
+      clear: 'store/clearAllLetters',
+      pop: 'store/removeLastLetter'
+    })
+  },
+  mounted(){
+    // add document typing listener
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Backspace'){
+        this.pop()
+      }else{
+        this.add(e.key)
+      }
     })
   }
 }
@@ -75,6 +98,10 @@ export default {
       justify-content: center;
       border:1px solid var(--c-border);
       border-radius: var(--border-radius);
+
+      &.included{
+        background-color: #fff;
+      }
     }
   }
 }
